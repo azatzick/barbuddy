@@ -1,0 +1,1 @@
+# Barbuddy FastAPI Application 
