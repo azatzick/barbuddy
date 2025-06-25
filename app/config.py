@@ -4,7 +4,7 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # Database
-    database_url: str = "postgresql://user:password@localhost/barbuddy"
+    database_url: str = "postgresql+asyncpg://user:password@localhost/barbuddy"
     
     # JWT
     secret_key: str = "your-secret-key-here"
