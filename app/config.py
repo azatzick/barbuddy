@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from typing import Optional
+from typing import Optional, List
 
 
 class Settings(BaseSettings):
@@ -11,15 +11,19 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     
+    # API Configuration
+    api_v1_prefix: str = "/api/v1"
+    project_name: str = "BarBuddy"
+    backend_cors_origins: List[str] = ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200"]
+    debug: bool = False
+    
     # Google OAuth
     google_client_id: Optional[str] = None
     google_client_secret: Optional[str] = None
     
-    # CORS
-    allowed_origins: list = ["http://localhost:3000", "http://localhost:8000"]
-    
     class Config:
         env_file = ".env"
+        case_sensitive = False
 
 
 settings = Settings() 

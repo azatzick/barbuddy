@@ -70,65 +70,6 @@ class Bar(BarBase):
         from_attributes = True
 
 
-class BarWithVisitors(Bar):
-    here_now_count: int = 0
-
-
-# Bar visit schemas
-class BarVisitBase(BaseModel):
-    rating: int
-    review: Optional[str] = None
-
-
-class BarVisitCreate(BarVisitBase):
-    bar_id: int
-
-
-class BarVisit(BarVisitBase):
-    id: int
-    user_id: int
-    bar_id: int
-    visited_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
-# Here now status schemas
-class HereNowStatusBase(BaseModel):
-    is_here: bool
-
-
-class HereNowStatusCreate(HereNowStatusBase):
-    bar_id: int
-
-
-class HereNowStatus(HereNowStatusBase):
-    id: int
-    user_id: int
-    bar_id: int
-    updated_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
-# Friend schemas
-class FriendRequest(BaseModel):
-    friend_email: EmailStr
-
-
-class FriendResponse(BaseModel):
-    id: int
-    name: str
-    email: EmailStr
-    is_here_now: bool = False
-    current_bar: Optional[str] = None
-
-    class Config:
-        from_attributes = True
-
-
 # Map and location schemas
 class LocationRequest(BaseModel):
     latitude: float
@@ -137,5 +78,5 @@ class LocationRequest(BaseModel):
 
 
 class BarSearchResponse(BaseModel):
-    bars: List[BarWithVisitors]
+    bars: List[Bar]
     total: int 

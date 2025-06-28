@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth, bars, friends, profile
+from app.routers import auth, bars
 from app.database import engine
 from app.models import Base
 
@@ -9,7 +9,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Barbuddy API",
-    description="A social app for tracking bar visits and connecting with friends",
+    description="A simple app to find bars near you",
     version="1.0.0"
 )
 
@@ -22,11 +22,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
+# Include only essential routers
 app.include_router(auth.router)
 app.include_router(bars.router)
-app.include_router(friends.router)
-app.include_router(profile.router)
 
 
 @app.get("/")

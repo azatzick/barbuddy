@@ -135,6 +135,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+!env.example
 
 # Spyder project settings
 .spyderproject
@@ -224,3 +225,18 @@ static/
 
 # PyCharm
 .idea/
+
+# Additional environment patterns
+.env*
+!env.example
+*.env
+env
+.envrc
+.direnv/
+.python-env/
+.virtualenv/
+virtualenv/
+pythonenv*
+Python*/
+.conda/
+conda-env/

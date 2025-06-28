@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from app.database import get_db
 from app.models import User
 from app.schemas import UserCreate, Token, LoginRequest, GoogleAuthRequest
@@ -11,9 +12,13 @@ router = APIRouter(prefix="/auth", tags=["authentication"])
 
 
 @router.post("/register", response_model=Token)
-def register(user_data: UserCreate, db: Session = Depends(get_db)):
+async def register(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     # Check if user already exists
-    existing_user = db.query(User).filter(User.email == user_data.email).first()
+    result = await db.execute(
+        select(User).where(User.email == user_data.email)
+    )
+    existing_user = result.scalar_one_or_none()
+    
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -32,8 +37,8 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
         google_id=user_data.google_id
     )
     db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    await db.commit()
+    await db.refresh(db_user)
     
     # Create access token
     access_token = create_access_token(data={"sub": user_data.email})
@@ -41,8 +46,12 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=Token)
-def login(login_data: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == login_data.email).first()
+async def login(login_data: LoginRequest, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(User).where(User.email == login_data.email)
+    )
+    user = result.scalar_one_or_none()
+    
     if not user or not user.hashed_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -60,7 +69,7 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/google", response_model=Token)
-async def google_auth(auth_data: GoogleAuthRequest, db: Session = Depends(get_db)):
+async def google_auth(auth_data: GoogleAuthRequest, db: AsyncSession = Depends(get_db)):
     # Verify Google token (simplified - you'll need to implement proper Google OAuth)
     # This is a placeholder implementation
     try:
@@ -73,7 +82,10 @@ async def google_auth(auth_data: GoogleAuthRequest, db: Session = Depends(get_db
         user_info = {"email": "user@example.com", "name": "Google User", "google_id": "google_123"}
         
         # Check if user exists
-        user = db.query(User).filter(User.google_id == user_info["google_id"]).first()
+        result = await db.execute(
+            select(User).where(User.google_id == user_info["google_id"])
+        )
+        user = result.scalar_one_or_none()
         
         if not user:
             # Create new user
@@ -83,8 +95,8 @@ async def google_auth(auth_data: GoogleAuthRequest, db: Session = Depends(get_db
                 google_id=user_info["google_id"]
             )
             db.add(user)
-            db.commit()
-            db.refresh(user)
+            await db.commit()
+            await db.refresh(user)
         
         access_token = create_access_token(data={"sub": user.email})
         return {"access_token": access_token, "token_type": "bearer"}
