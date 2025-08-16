@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 import json
 from flask import Flask, jsonify, request
@@ -55,8 +58,7 @@ def get_data():
     if db:
         try:
             # Get a reference to a collection.
-            # Replace 'your-collection-name' with the name of your Firestore collection.
-            docs_ref = db.collection('your-collection-name').limit(10)
+            docs_ref = db.collection('users').limit(10)
             
             # Fetch the documents.
             docs = docs_ref.stream()
@@ -100,7 +102,7 @@ def add_data():
             }), 400
 
         # Add a new document to the collection.
-        doc_ref = db.collection('your-collection-name').add(request_data)
+        doc_ref = db.collection('users').add(request_data)
 
         return jsonify({
             "status": "success",
