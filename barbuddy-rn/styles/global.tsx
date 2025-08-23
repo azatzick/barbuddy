@@ -47,4 +47,7 @@ export const GlobalStyles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
+  buttonContainer: {
+    width: '80%',
+  }
 });

@@ -15,6 +15,9 @@ export default function RootLayout() {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerShadowVisible: false, // applied here
+        headerShown: false
+
       }}>
       {isAuthenticated ? (
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
