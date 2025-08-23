@@ -3,8 +3,8 @@ from firebase_admin import auth, firestore
 
 auth_bp = Blueprint('auth',__name__)
 
+# --- New Endpoint to Sign Up for App (AKA create new user) ---
 @auth_bp.route('/signup', methods=['POST'])
-
 def signup():
     """
     Handles user signup. Creates a new user in Firebase auth and stores additional profile data in Firestore.
@@ -51,3 +51,4 @@ def signup():
             "status": "error",
             "message": f"An error occurred: {e}"
         }), 500
+
