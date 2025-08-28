@@ -4,39 +4,35 @@ Allows new user to create an account which is securely stored in Firebase
 Author: Wright Frost
 8/22/2025
 */
+import { useUser } from '../../hooks/useUser';
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../services/firebase';
 import { GlobalStyles } from '../../styles/global'; // Adjust the path as needed
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const SigninScreen = () => {
     const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState('')
-    const [message, setMessage] = useState('')
+    const { user, message, loading, login,setMessage} = useUser();
 
-    const handleSignin = async () => {
-        setLoading(true);
-        try {
-            // 1. Use the Firebase Client SDK to create the user.
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            if(user) {
-                Alert.alert("Success!", "Successfully logged in..");
-                console.log('User logged in:', user.uid);
-                setMessage('Successfully logged in')
+    useFocusEffect(
+        React.useCallback(() => {
+          // Clear the message state when the screen comes into focus
+          setMessage('');
+          // Clean up function to run when the screen loses focus
+          return () => setMessage('');
+        }, [setMessage]) // Added setMessage to dependency array for best practice
+      );
+      
+        const handleSignin = async () => {
+            // Call the login function from the context instead of handling auth directly.
+            const result = await login(email, password);
+            if (result.success) {
+                Alert.alert("Success!", result.message);
+            } else {
+                Alert.alert("Login Error", result.message);
             }
-          } catch (error) {
-                Alert.alert("Signup Error", error.message);
-                console.log(error.message)
-                if (error.message.includes('invalid-credential')) {
-                    setMessage('Username or password is incorrect')
-                };
-          } finally {
-            setLoading(false);
-          }
         };
     
     return (

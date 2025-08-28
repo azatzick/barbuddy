@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import React from 'react';
 import { GlobalStyles } from '@/styles/global';
-
 export default function AppIndex() {
   return (
     <View style={GlobalStyles.container}>

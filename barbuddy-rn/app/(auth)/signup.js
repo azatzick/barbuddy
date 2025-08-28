@@ -4,41 +4,36 @@ Allows new user to create an account which is securely stored in Firebase
 Author: Wright Frost
 8/22/2025
 */
+import { useUser } from '../../hooks/useUser';
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../services/firebase';
 import { GlobalStyles } from '../../styles/global'; // Adjust the path as needed
+import { useFocusEffect } from '@react-navigation/native'
+
 
 const SignupScreen = () => {
-    const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [message, setMessage] = useState('')
+    const { user, message, loading, register,setMessage} = useUser(); //destructure props we need from useUser()
+
+    // use useFocusEffect hook to clear any existing messages from the page if you leave it and come back
+    useFocusEffect(
+        React.useCallback(() => {
+          // Clear the message state when the screen comes into focus
+          setMessage('');
+          // Clean up function to run when the screen loses focus
+          return () => setMessage('');
+        }, [setMessage]) // Added setMessage to dependency array for best practice
+      );
 
     const handleSignup = async () => {
-        setLoading(true);
-        try {
-            // 1. Use the Firebase Client SDK to create the user.
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            if(user) {
-                Alert.alert("Success!", "Account created successfully.");
-                console.log('User created:', user.uid);
-                setMessage('User successfully created')
-            }
-          } catch (error) {
-                Alert.alert("Signup Error", error.message);
-                console.log(error.message)
-                if (error.message.includes('auth/email-already-in-use')) {
-                    setMessage('This email is already associated with an existing BarBuddy account')
-                }
-                else if (error.message.includes('auth/invalid-email')) {
-                    console.log('That email address is invalid!')
-                };
-          } finally {
-            setLoading(false);
-          }
+        const result = await register(email, password);
+        if (result.success) {
+            console.log(result.message)
+            Alert.alert("Success!", result.message);
+        } else {
+            Alert.alert("Login Error", result.message);
+        }
         };
     
     return (
