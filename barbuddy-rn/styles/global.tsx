@@ -16,6 +16,13 @@ export const GlobalStyles = StyleSheet.create({
     color: '#F2F0EF', // White
     textAlign: 'center',
   },
+  link: {
+    color: '#FFD700', // Gold color, to match the theme
+    textDecorationLine: 'underline', // Underline to indicate it's a link
+    fontSize: 16,
+    fontWeight: '500',
+    marginTop: 10,
+  },
   title: {
     fontSize: 28,
     fontWeight: '700',

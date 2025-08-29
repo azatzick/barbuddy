@@ -6,15 +6,19 @@ Author: Wright Frost
 */
 import { useUser } from '../../hooks/useUser';
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Pressable } from 'react-native';
 import { GlobalStyles } from '../../styles/global'; // Adjust the path as needed
 import { useFocusEffect } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
+import { Link } from 'expo-router';
+
 
 
 const SigninScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
     const { user, message, loading, login,setMessage} = useUser();
+    const router = useRouter();
 
     useFocusEffect(
         React.useCallback(() => {
@@ -24,7 +28,7 @@ const SigninScreen = () => {
           return () => setMessage('');
         }, [setMessage]) // Added setMessage to dependency array for best practice
       );
-      
+
         const handleSignin = async () => {
             // Call the login function from the context instead of handling auth directly.
             const result = await login(email, password);
@@ -64,6 +68,9 @@ const SigninScreen = () => {
             />
         </View>
         <Text style={GlobalStyles.text}>{message}</Text>
+        <Pressable onPress={() => router.replace('/signup')}>
+            <Text style={GlobalStyles.link}>Register for new account</Text>
+        </Pressable>
         </View>
     );
 };
