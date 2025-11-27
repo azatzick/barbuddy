@@ -29,14 +29,12 @@ const SignupScreen = () => {
       );
 
     const handleSignup = async () => {
-        const result = await register(email, password);
-        if (result.success) {
-            console.log(result.message)
-            // Alert.alert("Success!", result.message);
-        } else {
-            // Alert.alert("Login Error", result.message);
+        try {
+            await register(email, password)    
+        }catch(error){
+            setMessage(error.message)
         }
-        };
+    };
     
     return (
     <View style={GlobalStyles.container}>
@@ -66,7 +64,7 @@ const SignupScreen = () => {
             />
         </View>
         <Text style={GlobalStyles.text}>{message}</Text>
-        <Pressable onPress={() => router.replace('/login')}>
+        <Pressable style={({ pressed }) => [GlobalStyles.link, pressed && { opacity: 0.5 }]} onPress={() => router.replace('/login')}>
             <Text style={GlobalStyles.link}>Login to existing account</Text>
         </Pressable>
         </View>

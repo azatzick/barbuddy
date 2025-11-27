@@ -31,11 +31,10 @@ const SigninScreen = () => {
 
         const handleSignin = async () => {
             // Call the login function from the context instead of handling auth directly.
-            const result = await login(email, password);
-            if (result.success) {
-                Alert.alert("Success!", result.message);
-            } else {
-                Alert.alert("Login Error", result.message);
+            try{
+                await login(email, password)
+            } catch(error) {
+                setMessage(error.message)
             }
         };
     
@@ -68,7 +67,7 @@ const SigninScreen = () => {
             />
         </View>
         <Text style={GlobalStyles.text}>{message}</Text>
-        <Pressable onPress={() => router.replace('/signup')}>
+        <Pressable style={({ pressed }) => [GlobalStyles.link, pressed && { opacity: 0.5 }]} onPress={() => router.replace('/signup')}>
             <Text style={GlobalStyles.link}>Register for new account</Text>
         </Pressable>
         </View>

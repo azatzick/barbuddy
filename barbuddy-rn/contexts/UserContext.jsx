@@ -1,5 +1,5 @@
 import { createContext,useState } from "react";
-import { signInWithEmailAndPassword , createUserWithEmailAndPassword} from 'firebase/auth';
+import { signInWithEmailAndPassword , createUserWithEmailAndPassword, signOut} from 'firebase/auth';
 import { auth } from '../services/firebase';
 
 export const UserContext = createContext();
@@ -18,20 +18,14 @@ export function UserProvider({ children }) { //children prop represents child co
             const returnedUser = userCredential.user;
             if(returnedUser) {
                 setUser(returnedUser);
-                console.log('User logged in:', user.uid);
+                console.log('User logged in:', returnedUser.uid);
                 setMessage('Successfully logged in')
-                return { success: true, message};
+                return { success: true, message: 'Successfully logged in'};
 
             }
           } catch (error) {
                 console.log(error.message)
-                if (error.message.includes('invalid-credential')) {
-                    setMessage('Username or password is incorrect')
-                }
-                else if (error.message.includes('auth/invalid-email')) {
-                    setMessage('The email address you have entered is invalid. Please use a valid email.')
-                }
-                return {success: false, message};
+                throw error
           } finally {
             setLoading(false);
           }
@@ -47,32 +41,47 @@ export function UserProvider({ children }) { //children prop represents child co
             const returnedUser = userCredential.user;
             if(returnedUser) {
                 setUser(returnedUser);
-                console.log('User logged in:', user.uid);
+                console.log('User logged in:', returnedUser.uid);
                 setMessage('Account created successfully.')
-                return { success: true, message};
+                return { success: true, message:'Account created successfully.'};
 
             }
           } catch (error) {
                 console.log(error.message)
+                let errorMessage = 'An unknown error occurred'
                 if (error.message.includes('auth/email-already-in-use')) {
                     setMessage('This email is already associated with an existing BarBuddy account')
+                    errorMessage = 'This email is already associated with an existing BarBuddy account';
                 }
                 else if (error.message.includes('auth/invalid-email')) {
                     setMessage('The email address you have entered is invalid. Please use a valid email.')
+                    errorMessage = 'The email address you have entered is invalid. Please use a valid email.'
+
                 }
                 else if (error.message.includes('auth/weak-password')) {
                     setMessage('The password you have entered is too weak. Please enter a stronger password.')
+                    errorMessage = 'The email address you have entered is invalid. Please use a valid email.'
                 }
-                return {success: false, message};
+                return {success: false, message:errorMessage};
           } finally {
             setLoading(false);
           }
     }
 
     async function logout() {
-        await account.deleteSession("current")
-        setUser(null);
-    }
+            setLoading(true); // Optional: Set loading state
+            try {
+                await signOut(auth); // <-- Use the Firebase signOut function
+                setUser(null);
+                setMessage('Logged out successfully.');
+                console.log('User logged out.');
+            } catch (error) {
+                console.error("Error signing out:", error);
+                setMessage('Failed to log out.');
+            } finally {
+                setLoading(false);
+            }
+        }
 
     return (
         <UserContext value = {{user, loading, message, login, register, logout,setMessage}}>   

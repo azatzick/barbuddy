@@ -1,23 +1,24 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Link, Redirect } from 'expo-router';
 import React from 'react';
 import { GlobalStyles } from '@/styles/global';
+import { useUser } from '@/hooks/useUser';
 export default function AppIndex() {
-  return (
-    <View style={GlobalStyles.container}>
-      <Text style={GlobalStyles.title}>Welcome to BarBuddy</Text>
-      <View style={GlobalStyles.buttonContainer}>
-        <Link href="/(auth)/signup" asChild>
-          <TouchableOpacity style={GlobalStyles.button}>
-            <Text style={GlobalStyles.buttonText}>Sign up for a new account</Text>
-          </TouchableOpacity>
-        </Link>
-        <Link href="/(auth)/login" asChild>
-          <TouchableOpacity style={GlobalStyles.button}>
-            <Text style={GlobalStyles.buttonText}>Login to an existing account</Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
-    </View>
-  );
+    const { user, loading } = useUser();
+    // 1. Show spinner while Firebase loads
+    if (loading) {
+        return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1E1E1E' }}>
+            <ActivityIndicator size="large" color="#FFD700" />
+        </View>
+        );
+    }
+
+    // 2. If User exists, Go to Tabs
+    if (user) {
+        return <Redirect href="/(tabs)" />;
+    }
+
+    // 3. If No User, Go to Login
+    return <Redirect href="/(auth)/login" />;
 };
