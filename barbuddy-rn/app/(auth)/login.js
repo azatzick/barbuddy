@@ -36,10 +36,17 @@ const SigninScreen = () => {
                 setMessage(error.message)
             }
         };
+
+    if(loading){
+      return(
+        <View style={styles.container}>
+        <LifeLine color="#8E4585" size="medium" text="Loading..." textColor="8E4585" style = {styles.lifeline}/>
+        </View>
+      )
+    }
     
     return (
     <View style={styles.container}>
-        {/* <LifeLine color="#8E4585" size="medium" text="Loading..." textColor="8E4585" style = {styles.lifeline} animating = {loading}/> */}
         <Text style={styles.title}>Log in to your BarBuddy account</Text>
         <TextInput
             style={styles.input}

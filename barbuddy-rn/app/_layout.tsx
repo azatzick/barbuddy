@@ -2,9 +2,8 @@ import { Stack, useSegments, useRouter, useRootNavigationState, Slot } from 'exp
 import React from 'react';
 import {UserProvider} from '../contexts/UserContext';
 import { useUser } from '../hooks/useUser';
-import { StyleSheet } from 'react-native';
 import { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
 import { useFonts } from 'expo-font';
 import { LifeLine } from 'react-loading-indicators';
@@ -21,7 +20,10 @@ function RootLayoutContent() {
   })
 
   if(!fontsLoaded) {
-    return <LifeLine color="#8E4585" size="medium" text="Loading..." textColor="8E4585" style = {styles.lifeline}/>; // Or any other loading indicator
+    return (
+    <View style = {styles.container}>
+        <LifeLine color="#8E4585" size="medium" text="Loading..." textColor="8E4585" style = {styles.lifeline}/>
+    </View>);
   }
 
   useEffect(() => {
@@ -29,7 +31,9 @@ function RootLayoutContent() {
     const inAuthGroup = segments[0] === '(auth)';
     const inTabsGroup = segments[0] === '(tabs)';
 
-    //if we are at root, let app/index.tsx handle render
+    /*if we are at root, let app/index.tsx handle render
+    Block error because app expects segments will always have 1 or 2 values
+    @ts-expect-error */ 
     if (segments.length === 0) {
       return
     };
