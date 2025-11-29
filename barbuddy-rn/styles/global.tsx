@@ -2,9 +2,6 @@ import { useFonts } from 'expo-font';
 import { StyleSheet, Platform} from 'react-native';
 import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
 
-const [fontsLoaded] = useFonts({
-    NovaMono_400Regular
-  })
 
 export const GlobalStyles = StyleSheet.create({
   container: {
