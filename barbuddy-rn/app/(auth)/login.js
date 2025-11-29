@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 15,
         paddingHorizontal: 15,
-        width: '80%',
+        width: '79%',
         color: '8E4585',
         backgroundColor: 'rgba(255, 255, 255, 0.1)', // Subtle transparent background
       },
