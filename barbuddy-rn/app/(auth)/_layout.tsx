@@ -15,9 +15,9 @@ export default function AuthLayout() {
           fontWeight: 'bold',
         },
       }}>
-      <Stack.Screen name="login" options={{ title: 'Log In'}}/>
-      <Stack.Screen name="signup" options={{ title: 'Sign Up'}}/>
-      <Stack.Screen name="profile" options={{title: "Profile"}}/>
+      <Stack.Screen name="login" options={{ title: 'Log In', headerShown: false}}/>
+      <Stack.Screen name="signup" options={{ title: 'Sign Up', headerShown: false}}/>
+      {/* <Stack.Screen name="profile" options={{title: "Profile"}}/> */}
     </Stack>
   );
 }

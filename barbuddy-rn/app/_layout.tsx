@@ -1,9 +1,13 @@
 import { Stack, useSegments, useRouter, useRootNavigationState, Slot } from 'expo-router';
 import React from 'react';
-import {UserProvider} from '../contexts/UserContext'
-import { useUser } from '../hooks/useUser'
+import {UserProvider} from '../contexts/UserContext';
+import { useUser } from '../hooks/useUser';
+import { StyleSheet } from 'react-native';
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
+import { useFonts } from 'expo-font';
+import { LifeLine } from 'react-loading-indicators';
 
 function RootLayoutContent() {
   const {user, loading} = useUser();
@@ -11,6 +15,14 @@ function RootLayoutContent() {
   const router = useRouter();
   const navigationState = useRootNavigationState();
   console.log(loading);
+
+  const [fontsLoaded] = useFonts({
+    NovaMono_400Regular
+  })
+
+  if(!fontsLoaded) {
+    return <LifeLine color="#8E4585" size="medium" text="Loading..." textColor="8E4585" style = {styles.lifeline}/>; // Or any other loading indicator
+  }
 
   useEffect(() => {
     if (!navigationState?.key || loading) return;
@@ -42,19 +54,7 @@ function RootLayoutContent() {
   }, [user, loading, segments, navigationState]);
 
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#1E1E1E', // Dark background
-        },
-        headerTintColor: '#FFD700', // Gold color for the back button and title
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        headerShadowVisible: false,
-        headerShown: false,
-      }}
-    >
+    <Stack>
       <Stack.Screen name = "index" options={{ headerShown: false }}/>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -69,3 +69,21 @@ export default function RootLayout() {
     </UserProvider>
   )
 };
+
+const styles = StyleSheet.create({
+  container:{
+    backgroundColor:'32cd32',
+    alignItems: 'center',
+    justifyContent:'center',
+    padding:30
+  },
+  novaMono:{
+    fontSize: 20,
+    fontFamily: 'NovaMono_400Regular'
+  },
+  lifeline:{
+    alignItems:'center',
+    justifyContent:'center',
+    fontFamily: 'NovaMono_400Regular'
+  }
+})

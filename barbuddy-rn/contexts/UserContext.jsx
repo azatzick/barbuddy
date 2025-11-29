@@ -25,7 +25,7 @@ export function UserProvider({ children }) { //children prop represents child co
             }
           } catch (error) {
                 console.log(error.message)
-                throw error
+                throw error;
           } finally {
             setLoading(false);
           }

@@ -1,11 +1,17 @@
-import { StyleSheet, Platform } from 'react-native';
+import { useFonts } from 'expo-font';
+import { StyleSheet, Platform} from 'react-native';
+import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
+
+const [fontsLoaded] = useFonts({
+    NovaMono_400Regular
+  })
 
 export const GlobalStyles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1E1E1E', // Dark background
+    backgroundColor: 'lavender', // lavender background
     padding: 20,
     // Use platform-specific shadows
     ...Platform.select({
@@ -32,26 +38,29 @@ export const GlobalStyles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 40,
     color: '#E0E0E0', // Slightly lighter gray for improved contrast
+    fontFamily:'Proxima Nova',
     textAlign: 'center',
   },
   link: {
-    color: '#FFD700', // Gold color, to match the theme
+    color: '#8E4585', // Plum color, to match the theme
     textDecorationLine: 'underline', // Underline to indicate it's a link
     fontSize: 16,
     fontWeight: '500',
+    fontFamily:'NovaMono_400Regular',
     marginTop: 10,
     opacity: 0.8,
   },
   title: {
     fontSize: 28,
     fontWeight: '700',
+    fontFamily:'NovaMono_400Regular',
     marginBottom: 40,
-    color: '#FFD700', // Gold color
+    color: '#8E4585', // Plum color
     textAlign: 'center',
   },
   input: {
     height: 50,
-    borderColor: '#FFD700',
+    borderColor: '#8E4585',
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 15,
@@ -61,7 +70,7 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)', // Subtle transparent background
   },
   button: {
-    backgroundColor: '#FFD700', // Gold color
+    backgroundColor: '#8E4585', // Plum color
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 8,
@@ -73,7 +82,7 @@ export const GlobalStyles = StyleSheet.create({
     // Another cool feature: a soft shadow to make the button stand out
     ...Platform.select({
       ios: {
-        shadowColor: '#FFD700',
+        shadowColor: '#8E4585',
         shadowOffset: {
           width: 0,
           height: 4,
@@ -102,6 +111,7 @@ export const GlobalStyles = StyleSheet.create({
     color: '#000',
     fontSize: 18,
     fontWeight: '700',
+    fontFamily:'NovaMono_400Regular',
     textAlign: 'center',
   },
 });
