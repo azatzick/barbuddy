@@ -3,10 +3,11 @@ import {ImageBackground,View, Text, StyleSheet, Image, Pressable, TouchableOpaci
 import {useState} from 'react';
 import { GlobalStyles } from '@/styles/global';
 import { useFonts } from "expo-font";
-import { markNodeAsRemovable } from 'react-native-reanimated/lib/typescript/core';
+// import { markNodeAsRemovable } from 'react-native-reanimated/lib/typescript/core';
 import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
 import React from 'react';
 import { Stack, useSegments, useRouter, useRootNavigationState, Slot } from 'expo-router';
+//@ts-ignore
 import BarMap from '../../components/BarMap';
 import BeerIcon from '../../assets/images/beer_svg.svg';
 
