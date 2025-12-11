@@ -5,10 +5,10 @@ import { GlobalStyles } from '@/styles/global';
 import { useFonts } from "expo-font";
 import { markNodeAsRemovable } from 'react-native-reanimated/lib/typescript/core';
 import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
-import {LifeLine} from 'react-loading-indicators';
 import React from 'react';
 import { Stack, useSegments, useRouter, useRootNavigationState, Slot } from 'expo-router';
-import BarMap from '@/components/BarMap';
+import BarMap from '../../components/BarMap';
+import BeerIcon from '../../assets/images/beer_svg.svg';
 
 /* 
 Home Screen contains default map view and links
@@ -28,7 +28,7 @@ export default function HomeScreen() {
       <Text style={styles.header}>Welcome to BarBuddy</Text>
       <TouchableOpacity onPress={handlePress} style={styles.profileButton}>
       <Text style ={styles.iconText}>Profile</Text>
-      <Image source = {require('../../assets/images/beer-svg.png')} style = {styles.icon}/>
+      <BeerIcon width="30" height="30"/>
       </TouchableOpacity>
     </View>
     <BarMap/>

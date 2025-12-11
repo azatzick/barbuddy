@@ -1,13 +1,22 @@
-import { createContext,useState } from "react";
-import { signInWithEmailAndPassword , createUserWithEmailAndPassword, signOut} from 'firebase/auth';
+import { createContext,useState, useEffect} from "react";
+import { signInWithEmailAndPassword , createUserWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth';
 import { auth } from '../services/firebase';
 
 export const UserContext = createContext();
 
 export function UserProvider({ children }) { //children prop represents child components Provider function will wrap
     const [user,setUser] = useState(null )
-    const [loading,setLoading] = useState(false);
+    const [loading,setLoading] = useState(true);
     const [message,setMessage] = useState('');
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth,(currentUser) => {
+            console.log("Auth State Changed. User:", currentUser?.email);
+            setUser(currentUser)
+            setLoading(false)
+        });
+        return () => unsubscribe();
+    }, []);
 
     async function login(email, password) {
         setLoading(true)
