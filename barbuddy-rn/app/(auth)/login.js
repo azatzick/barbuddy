@@ -10,7 +10,6 @@ import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Pr
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { Link } from 'expo-router';
-import {LifeLine} from 'react-loading-indicators';
 
 
 const SigninScreen = () => {
@@ -40,7 +39,7 @@ const SigninScreen = () => {
     if(loading){
       return(
         <View style={styles.container}>
-        <LifeLine color="#8E4585" size="medium" text="Loading..." textColor="8E4585" style = {styles.lifeline}/>
+          <ActivityIndicator size="large" color="#8E4585" />
         </View>
       )
     }

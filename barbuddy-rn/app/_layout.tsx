@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
 import { useFonts } from 'expo-font';
-import { LifeLine } from 'react-loading-indicators';
 
 function RootLayoutContent() {
   const {user, loading} = useUser();
@@ -18,13 +17,6 @@ function RootLayoutContent() {
   const [fontsLoaded] = useFonts({
     NovaMono_400Regular
   })
-
-  if(!fontsLoaded) {
-    return (
-    <View style = {styles.container}>
-        <LifeLine color="#8E4585" size="medium" text="Loading..." textColor="8E4585" style = {styles.lifeline}/>
-    </View>);
-  }
 
   useEffect(() => {
     if (!navigationState?.key || loading) return;
@@ -56,6 +48,14 @@ function RootLayoutContent() {
       }
     }
   }, [user, loading, segments, navigationState]);
+
+  if(!fontsLoaded) {
+    return (
+    <View style = {styles.container}>
+      <ActivityIndicator size="large" color="#8E4585" />
+    </View>);
+  }
+
 
   return (
     <Stack>
