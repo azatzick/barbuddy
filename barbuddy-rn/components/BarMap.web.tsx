@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import {GoogleMap, LoadScript} from '@react-google-maps/api'
 import { barMapTheme } from './MapStyles';
 
-export default function BarMap() {
+export default function BarMap({children}: {children: React.ReactNode}) { 
     const env = process.env
     const apiKey = env.EXPO_PUBLIC_GOOGLE_MAPS_KEY
     console.log('apiKey',apiKey)
@@ -35,9 +35,10 @@ export default function BarMap() {
                     zoomControl:false
                 }}
                 ></GoogleMap>
-
             </LoadScript>
-
+            <View style={styles.overlayContainer}>
+                {children}
+            </View>
         </View>
     );
 }
@@ -45,10 +46,9 @@ export default function BarMap() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-    height: 300, // Give it a fixed height so it's visible
+    // Remove justifyContent/alignItems from here if overlayContainer handles centering
+    backgroundColor: '#f0f0f0', // Consider if this background is needed if the map fills the space
+    // height: 300, // This fixed height might prevent the map from filling the screen. Consider removing or adjusting.
   },
   text: {
     color: '#8E4585',
@@ -57,6 +57,16 @@ const styles = StyleSheet.create({
   containerStyle:{
     width:'100%',
     height:'100%'
+  },
+  overlayContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',     // Center children horizontally
+    paddingBottom: 40,       // Add padding from the bottom edge
+    justifyContent:'flex-end'
   }
 });
 

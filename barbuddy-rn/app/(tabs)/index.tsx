@@ -9,7 +9,7 @@ import React from 'react';
 import { Stack, useSegments, useRouter, useRootNavigationState, Slot } from 'expo-router';
 //@ts-ignore
 import BarMap from '../../components/BarMap';
-import BeerIcon from '../../assets/images/beer_svg.svg';
+import NavBar from '../../components/NavBar';
 
 /* 
 Home Screen contains default map view and links
@@ -19,20 +19,11 @@ to other screens (profile, saved locations, etc)
 export default function HomeScreen() {
   const router = useRouter();
 
-  const handlePress = () => {
-    router.push('/profile')
-  };
-
   return (
-  <View style={styles.container}>
-      <View style={styles.topBar}>
-      <Text style={styles.header}>Welcome to BarBuddy</Text>
-      <TouchableOpacity onPress={handlePress} style={styles.profileButton}>
-      <Text style ={styles.iconText}>Profile</Text>
-      <BeerIcon width="30" height="30"/>
-      </TouchableOpacity>
-    </View>
-    <BarMap/>
+  <View style={styles.container} >
+    <BarMap>
+      <NavBar/>
+    </BarMap>
   </View>
   );
 };
@@ -40,23 +31,9 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor:'lavender',
     // alignItems: 'center',
-    // justifyContent:'center',
+    justifyContent:'center',
     padding:30,
-  },
-  topBar:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    marginBottom:20,
-    height:80
-  },
-  header:{
-    fontSize: 25,
-    fontWeight:'bold',
-    fontFamily: 'NovaMono_400Regular',
-    color:'#8E4585'
   },
   text:{
     fontSize:15,
@@ -69,11 +46,6 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     fontFamily:'NovaMono_400Regular',
     color:'#000000',
-  },
-  lifeline:{
-    alignItems:'center',
-    justifyContent:'center',
-
   },
   icon:{
     width:50,
