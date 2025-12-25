@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { NovaMono_400Regular } from '@expo-google-fonts/nova-mono';
 import { useFonts } from 'expo-font';
+import { LinearGradient } from 'expo-linear-gradient';
 
 function RootLayoutContent() {
   const {user, loading} = useUser();
@@ -51,9 +52,9 @@ function RootLayoutContent() {
 
   if(!fontsLoaded) {
     return (
-    <View style = {styles.container}>
+    <LinearGradient colors={['#f5f5f5ff', '#8c84d1ff']} style = {styles.container}>
       <ActivityIndicator size="large" color="#8E4585" />
-    </View>);
+    </LinearGradient>);
   }
 
 
@@ -76,7 +77,7 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   container:{
-    backgroundColor:'32cd32',
+    flex: 1,
     alignItems: 'center',
     justifyContent:'center',
     padding:30

@@ -10,6 +10,7 @@ import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Pr
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { Link } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const SigninScreen = () => {
@@ -45,11 +46,14 @@ const SigninScreen = () => {
     }
     
     return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#f5f5f5ff', '#8c84d1ff']} style={styles.container}>
+      <View style={styles.card} opacity={loading ? 0.3 : 1}>
         <Text style={styles.title}>Log in to your BarBuddy account</Text>
+        {message ? <Text style={styles.text}>{message}</Text> : null}
         <TextInput
             style={styles.input}
             placeholder="Email"
+            placeholderTextColor="#555"
             keyboardType = "email-address" 
             value={email}
             onChangeText={setEmail}
@@ -58,6 +62,7 @@ const SigninScreen = () => {
             style = {styles.input}
             secureTextEntry={true}
             placeholder="Password"
+            placeholderTextColor="#555"
             value = {password}
             onChangeText = {setPassword}>
         </TextInput>
@@ -70,11 +75,11 @@ const SigninScreen = () => {
                 <Text style = {styles.buttonText}>Sign In</Text>
             </TouchableOpacity>
         </View>
-        <Text style={styles.text}>{message}</Text>
         <Pressable style={({ pressed }) => [styles.link, pressed && { opacity: 0.5 }]} onPress={() => router.replace('/signup')}>
             <Text style={styles.link}>Register for new account</Text>
         </Pressable>
-        </View>
+      </View>
+    </LinearGradient>
     );
 };
 
@@ -84,30 +89,21 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'lavender', // lavender background
         padding: 20,
-        // Use platform-specific shadows
-        ...Platform.select({
-          ios: {
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-            shadowOpacity: 0.3,
-            shadowRadius: 5,
-          },
-          android: {
-            elevation: 8,
-          },
-          web: {
-            // Use standard CSS boxShadow for the web platform
-            boxShadow: '0 4px 5px rgba(0, 0, 0, 0.3)',
-          },
-        })
+    },
+    card: {
+        width: '100%',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: 20,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
     },
     link: {
-        color: '#8E4585', // Plum color, to match the theme
+        color: '#2E003E', // Deep Purple for better contrast
         textDecorationLine: 'underline', // Underline to indicate it's a link
         fontSize: 16,
         fontWeight: '500',
@@ -119,7 +115,15 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '500',
         marginBottom: 40,
-        color: '#458E4E', // Slightly lighter gray for improved contrast
+        color: '#B00020',
+        fontFamily:'NovaMono_400Regular',
+        textAlign: 'center',
+      },
+    error: {
+        fontSize: 20,
+        fontWeight: '500',
+        marginBottom: 40,
+        color: '#000000ff', // Dark black for error messages
         fontFamily:'NovaMono_400Regular',
         textAlign: 'center',
       },
@@ -128,22 +132,23 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontFamily:'NovaMono_400Regular',
         marginBottom: 40,
-        color: '#8E4585', // Plum color
+        color: '#1A1A1A', // Near Black for high contrast
         textAlign: 'center',
     },
     input: {
         height: 50,
-        borderColor: '#8E4585',
+        borderColor: '#2E003E',
         borderWidth: 1,
         borderRadius: 8,
         marginBottom: 15,
         paddingHorizontal: 15,
         width: '79%',
-        color: '8E4585',
+        color: '#1A1A1A', // Dark text for readability
         backgroundColor: 'rgba(255, 255, 255, 0.1)', // Subtle transparent background
+        borderStyle: 'solid',
       },
     button: {
-        backgroundColor: '#8E4585', // Plum color
+        backgroundColor: '#2E003E', // Deep Purple
         paddingVertical: 15,
         paddingHorizontal: 30,
         borderRadius: 8,
